@@ -1,0 +1,15 @@
+package com.example.service;
+
+import java.util.List;
+
+import com.example.model.UserModel;
+
+public interface UserService {
+
+	public List<UserModel> findAll(UserModel model);
+	public int countTotalItem(UserModel model);
+	public UserModel findOneById(Long id);
+	public UserModel update(UserModel userModel, long id);
+	public UserModel save(UserModel userModel);
+	public Integer[] getRoleByUser(long id);
+}

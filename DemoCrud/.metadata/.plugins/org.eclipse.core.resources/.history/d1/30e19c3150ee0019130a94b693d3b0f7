@@ -1,0 +1,28 @@
+package com.example.paging;
+
+public class PageRequest implements Pageable {
+
+    private int page;
+    private int maxPageItem;
+
+    public PageRequest(int page, int maxPageItem) {
+        this.page = page;
+        this.maxPageItem = maxPageItem;
+    }
+
+	public int getPage() {
+		 return page;
+	}
+
+	public int getOffset() {
+		return (this.page -1) * this.maxPageItem;
+	}
+
+	public int getLimit() {
+		 return maxPageItem;
+	}
+
+	
+
+   
+}

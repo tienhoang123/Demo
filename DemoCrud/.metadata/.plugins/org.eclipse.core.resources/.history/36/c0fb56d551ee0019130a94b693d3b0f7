@@ -1,0 +1,16 @@
+package com.example.repository.custormImpl;
+
+import java.util.List;
+
+import com.example.model.UserModel;
+import com.example.paging.Pageable;
+import com.example.repository.custorm.UserRepositoryCustorm;
+
+public class UserRepositoryCustormImpl implements UserRepositoryCustorm {
+
+	public List<?> findAll(UserModel model, Pageable pageable) {
+		StringBuilder sql = new StringBuilder("FROM UserEntity AS us");
+		return null;
+	}
+
+}

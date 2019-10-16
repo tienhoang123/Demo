@@ -1,0 +1,28 @@
+package com.example.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.entity.UserEntity;
+import com.example.model.UserModel;
+import com.example.paging.PageRequest;
+import com.example.paging.Pageable;
+import com.example.repository.custorm.UserRepositoryCustorm;
+import com.example.service.UserService;
+
+@Service
+public class UserServiceImpl implements UserService {
+	@Autowired
+	private UserRepositoryCustorm userRepository;
+
+	public List<UserModel> findAll(UserModel model) {
+		Pageable pageable = new PageRequest(model.getPage(), model.getMaxPageItems());
+	    List<UserEntity> userEntities = userRepository.findAll(model,pageable);
+		return null;
+	}
+
+
+
+}

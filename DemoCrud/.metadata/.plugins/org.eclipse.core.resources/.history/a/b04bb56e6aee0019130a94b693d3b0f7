@@ -1,0 +1,49 @@
+package com.example.controller;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.model.UserModel;
+import com.example.service.UserService;
+
+@Controller
+public class UserController {
+
+	@Autowired
+	private UserService userService;
+
+	@RequestMapping("/")
+	public String redirectPage() {
+		return "redirect:home";
+	}
+
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public String homeUser(Model model, @ModelAttribute("model") UserModel userModel, HttpServletRequest request,@RequestParam(value="page", required=false) Integer page) {
+		if(page != null) {
+			userModel.setPage(page);
+		}
+		List<UserModel> listModels = userService.findAll(userModel);
+		userModel.setListResult(listModels);
+		userModel.setTotalItems(userService.countTotalItem(userModel));
+		float a = userModel.getTotalItems()/userModel.getMaxPageItems();
+		userModel.setTotalPages(a);
+		System.out.println(userModel.getTotalItems()/userModel.getMaxPageItems());
+		System.out.println(Math.ceil(userModel.getTotalItems()/userModel.getMaxPageItems()));
+		List<Integer> changesRecords = Arrays.asList(5,10,15);
+		userModel.setChangeRecord(changesRecords);
+		model.addAttribute("model", userModel);
+		return "user/list";
+	}
+}

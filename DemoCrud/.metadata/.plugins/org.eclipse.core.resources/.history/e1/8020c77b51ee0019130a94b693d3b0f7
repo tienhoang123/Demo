@@ -1,0 +1,10 @@
+package com.example.model;
+
+public class UserModel extends AbstractModel<UserModel> {
+
+	private static final long serialVersionUID = 1L;
+
+	
+	
+	
+}

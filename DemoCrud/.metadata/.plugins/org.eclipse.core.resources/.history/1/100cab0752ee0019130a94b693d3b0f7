@@ -1,0 +1,28 @@
+package com.example.repository.custormImpl;
+
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.example.model.UserModel;
+import com.example.paging.Pageable;
+import com.example.repository.custorm.UserRepositoryCustorm;
+
+public class UserRepositoryCustormImpl implements UserRepositoryCustorm {
+
+	public List<?> findAll(UserModel model, Pageable pageable) {
+		StringBuilder sql = new StringBuilder("FROM UserEntity AS us");
+		sql.append(" WHERE 1=1 ");
+		if(StringUtils.isNotBlank(model.getUserName())) {
+			sql.append("AND LOWER(us.name) LIKE '%" + model.getUserName() + "%'");
+		}
+		if(StringUtils.isNotBlank(model.getEmail())) {
+			sql.append("AND LOWER(us.name) LIKE '%" + model.getEmail() + "%'");
+		}
+		if(StringUtils.isNotBlank(model.getNameRole())) {
+			sql.append("AND LOWER(us.name) LIKE '%" + model.getEmail()() + "%'");
+		}
+		return null;
+	}
+
+}

@@ -1,0 +1,265 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%><!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<c:url var="formUrl" value="/home" />
+<c:url var="API" value="/api/user"/>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Home</title>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="<c:url value='/resources/css/boostrapcss/bootstrap.min.css'/>" rel="stylesheet" id="bootstrap-css">
+<script src="<c:url value='/resources/js/bootstrapjs/bootstrap.min.js'/>"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<link href="<c:url value='/resources/css/home.css' />" rel="stylesheet">
+</head>
+<body>
+	<form:form commandName="model" action="${formUrl}" id="listForm"
+		method="GET">
+		<div class="alert alert-success" id="messageSuccess" style="display: none">
+        <strong>Success!</strong> Delete Success
+    </div>
+    <div class="alert alert-danger" id="messageError" style="display: none">
+    <strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
+  </div>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="main-box clearfix">
+						<div class="table-responsive">
+
+							<div class="form-group">
+								<label for="usr">Name:</label>
+								<form:input path="userName" cssClass="form-control" id="usr"
+									name="username" />
+							</div>
+							<div class="form-group">
+								<label for="pwd">Email:</label>
+								<form:input path="email" cssClass="form-control" id="usr"
+									name="email" />
+							</div>
+							<div class="form-group">
+
+								<form:select path="maxPageItems" id="maxitem"
+									cssClass="mdb-select md-form">
+									<form:options items="${model.changeRecord}" />
+								</form:select>
+							</div>
+							<button id="btnSearch" type="button" class="btn btn-primary">Search</button>
+
+
+							<table class="table user-list">
+								<thead>
+									<tr>
+										<th><input type='checkbox' id='checkAll'
+											class='check-box-element'></th>
+										<th><span>User</span></th>
+										<th><span>Created</span></th>
+										<th class="text-center"><span>Status</span></th>
+										<th><span>Email</span></th>
+										<!-- <th><button type="button" id="btnAdd" class="btn btn-info">Add</button></th> -->
+										<th>&nbsp;</th>
+									</tr>
+								</thead>
+								<tbody id="tbody">
+
+									<c:forEach items="${model.listResult}" var="items">
+										<tr>
+											<td><input type="checkbox" name="checkList"
+												value="${items.id}" id="checkbox_${items.id}"
+												class="check-box-element" onchange="checkedEvent(event)"></td>
+											<td>${items.userName}</td>
+											<td>${items.createdDate}</td>
+											<td class="text-center"><span class="label label-danger">${items.status}</span>
+											</td>
+											<td><a href="#">${items.email}</a></td>
+											<td style="width: 20%;"><a href='<c:url value="/detail/${items.id}"/>' id="btnEdit" class="table-link btnEdit">
+													<span class="fa-stack"> <i
+														class="fa fa-square fa-stack-2x"></i> <i
+														class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+												</span>
+											</a> <a href="#" class="table-link" disabled="disabled"> <span class="fa-stack">
+														<i class="fa fa-square fa-stack-2x"></i> <i
+														class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+												</span>
+											</a> <a href="#" class="table-link danger btnDelete"> <span
+													class="fa-stack"> <i
+														class="fa fa-square fa-stack-2x"></i> <i
+														class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+												</span>
+											</a></td>
+										</tr>
+									</c:forEach>
+
+								</tbody>
+							</table>
+						</div>
+						<c:if test="${model.totalItems > 0}">
+							<nav aria-label="...">
+								<ul class="pagination justify-content-end mt-3 mr-3">
+									<li class="page-item "><a class="page-link"
+										onclick="submitSearchForm(1);" href="#">First</a></li>
+									<c:if test="${model.page - 1  < 1 }">
+										<li class="page-item disabled"><a class="page-link"
+											onclick="submitSearchForm(${model.page + 1});" href="#">Previous</a></li>
+									</c:if>
+									<c:if test="${model.page - 1  >= 1 }">
+										<li class="page-item "><a class="page-link"
+											onclick="submitSearchForm(${model.page - 1});" href="#">Previous</a></li>
+									</c:if>
+
+
+									<c:forEach begin="0" end="${model.totalPages - 1}"
+										varStatus="loop">
+										<c:if test="${model.page == loop.index + 1}">
+											<li class="page-item active"><a class="page-link"
+												onclick="submitSearchForm(${loop.index + 1});" href="#">${loop.index + 1}</a></li>
+										</c:if>
+
+										<c:if test="${model.page != loop.index + 1}">
+											<li class="page-item"><a class="page-link"
+												onclick="submitSearchForm(${loop.index + 1});" href="#">${loop.index + 1}</a></li>
+
+										</c:if>
+									</c:forEach>
+									<c:if test="${model.page + 1  > model.totalPages }">
+										<li class="page-item disabled"><a class="page-link"
+											onclick="submitSearchForm(${model.page + 1});" href="#">Next</a></li>
+									</c:if>
+									<c:if test="${model.page + 1  <= model.totalPages }">
+										<li class="page-item "><a class="page-link"
+											onclick="submitSearchForm(${model.page + 1});" href="#">Next</a></li>
+									</c:if>
+
+									<li class="page-item "><a class="page-link"
+										onclick="submitSearchForm(${model.totalPages});" href="#">Last</a></li>
+								</ul>
+							</nav>
+						</c:if>
+					</div>
+				</div>
+			</div>
+		</div>
+		<form:hidden path="page" id="page" />
+	</form:form>
+	<div class="container">
+  <!-- The Modal -->
+  <div class="modal" id="myModal" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Delete User</h4>
+          <button type="button" class="close" id="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">   
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" id="btnRemove" class="btn btn-primary">Delete</button>
+          <button type="button" class="btn btn-danger" id="btnClose" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+</div>
+</body>
+</html>
+<script type="text/javascript">
+	$(document).ready(function () {
+	   
+	});
+
+	function submitSearchForm(page) {
+		$("#page").val(page);
+		$("#maxitem").val();
+		$("#listForm").submit();
+	}
+	$("#btnSearch").click(function(e){
+		$("#page").val(1);
+		$("#listForm").submit();
+	});
+	$("#checkAll").change(function(e){
+		var checkboxs = document.getElementsByName('checkList');
+		 for (let index = 0; index < checkboxs.length; index++) {
+	            if (this.checked) {
+	                checkboxs[index].checked = true;
+	            } else {
+	                checkboxs[index].checked = false;
+	            }
+
+	        } 
+	});
+	$(".btnDelete").click(function(){
+		$("#myModal").show();
+	});
+	$("#btnClose").click(function(){
+		$("#myModal").hide();		
+	});
+	$("#close").click(function(){
+		$("#myModal").hide();
+	});
+   function	checkedEvent(event){
+	   var sum = 0;
+       var checkboxs = document.getElementsByName('checkList');
+       for (let index = 0; index < checkboxs.length; index++) {
+           if (checkboxs[index].checked) {
+               sum++;
+           }
+
+       }
+       if (event.target.checked) {
+           if (sum == checkboxs.length) {
+               document.getElementById('checkAll').checked = true;
+           }
+       } else {
+           document.getElementById('checkAll').checked = false;
+       }
+	 }
+	$("#btnRemove").click(function(){
+		var dataArray = $(' tbody input[type=checkbox]:checked').map(function () {
+            return $(this).val();
+        }).get();
+        console.log(dataArray);
+		deleteUser(dataArray);
+	});
+
+    function deleteUser(data) {
+        $.ajax({
+            url: '${API}',
+            type: 'DELETE',
+            contentType:'application/json',
+            data: JSON.stringify(data),
+            success: function(res) {	
+                 $("#myModal").hide();
+            	 $("#messageSuccess").show();
+            	setTimeout(function () {
+                    $("#messageSuccess").hide();
+                    window.location.href = "<c:url value='/home'/>";
+                },3000);
+            },
+            error: function(res) {
+            	$("#myModal").hide();
+            	$("#messageError").show();
+            	setTimeout(function () {
+                    $("#messageError").hide();
+                    window.location.href = "<c:url value='/home'/>";
+                },3000);
+            }
+        });
+    }
+    
+	$("#btnAdd").click(function(e){
+		var clonedRow = $('tbody tr:first').clone();
+		clonedRow.find('input[type=text]').val('');
+		$("#tbody").append(clonedRow);
+		console.log(clonedRow);
+	});
+</script>

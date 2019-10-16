@@ -1,0 +1,51 @@
+package com.example.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.converter.UserConverter;
+import com.example.entity.UserEntity;
+import com.example.model.UserModel;
+import com.example.paging.PageRequest;
+import com.example.paging.Pageable;
+import com.example.repository.UserRepository;
+import com.example.repository.custorm.UserRepositoryCustorm;
+import com.example.service.UserService;
+
+@Service
+@Transactional
+public class UserServiceImpl implements UserService {
+	@Autowired
+	private UserRepositoryCustorm userRepositoryCustorm;
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private UserConverter converter;
+
+	public List<UserModel> findAll(UserModel model) {
+		Pageable pageable = new PageRequest(model.getPage(), model.getMaxPageItems());
+		List<UserEntity> userEntities = userRepositoryCustorm.findAll(model, pageable);
+		List<UserModel> models = new ArrayList<UserModel>();
+		for (UserEntity item : userEntities) {
+			models.add(converter.convertToDto(item));
+		}
+
+		return models;
+	}
+
+	public int countTotalItem(UserModel model) {
+
+		return userRepositoryCustorm.getTotalItems(model).intValue();
+	}
+
+	public UserModel findOneById(Long id) {
+		UserModel model = converter.convertToDto(userRepository.findOneById(id));
+		return model;
+	}
+
+}

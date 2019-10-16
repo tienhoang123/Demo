@@ -1,0 +1,13 @@
+jdbc.driverClassName = com.mysql.jdbc.Driver
+jdbc.url = jdbc:mysql://localhost:3306/cruduser
+jdbc.username = root
+jdbc.password = nam31011997
+
+hibernate.dialect = org.hibernate.dialect.MySQLDialect
+hibernate.show_sql = true
+hibernate.format_sql = true
+hibernate.default_schema = cruduser
+
+dir.default = /usr/var
+
+field.required = Vui long nhap gia tri

@@ -1,0 +1,33 @@
+package com.example.entity;
+
+@Entity
+@Table(name = "users")
+public class UserEntity extends BaseEntity
+{
+    private static final long serialVersionUID = -5426562322680764256L;
+
+    @Column
+    private String userName;
+
+    @Column
+    private String password;
+
+    @Column
+    private String fullName;
+
+    @Column
+    private  String email;
+
+    @Column
+    private  String phone;
+
+    @Column
+    private int status;
+
+
+    
+
+    
+
+
+}

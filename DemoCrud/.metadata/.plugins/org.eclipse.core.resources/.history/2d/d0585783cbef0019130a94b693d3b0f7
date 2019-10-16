@@ -1,0 +1,21 @@
+package com.example.validator;
+
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+
+import com.example.model.UserModel;
+
+public class UserValidator implements Validator {
+
+	public boolean supports(Class<?> clazz) {
+		return UserModel.class.isAssignableFrom(clazz);
+	}
+
+	public void validate(Object target, Errors errors) {
+		UserModel userModel = (UserModel) target;
+		if (userModel.getUserName() == null || userModel.getUserName().length() == 0) {
+			errors.rejectValue("userName", "field.required");
+		}
+	}
+
+}

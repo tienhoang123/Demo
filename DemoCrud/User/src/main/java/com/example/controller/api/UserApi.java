@@ -1,5 +1,7 @@
 package com.example.controller.api;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +28,8 @@ public class UserApi {
 	private UserRepository userRepository;
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private UserValidator userValidator;
+//	@Autowired
+//	private UserValidator userValidator;
 
 	@DeleteMapping
 	public ResponseEntity<String> deleteUser(@RequestBody long[] ids) {
@@ -40,8 +42,8 @@ public class UserApi {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateUser(@RequestBody UserModel userModel, @PathVariable("id") long id,BindingResult bindingResult) {
-		userValidator.validate(userModel, bindingResult);
+	public ResponseEntity<?> updateUser(@RequestBody @Valid UserModel userModel, @PathVariable("id") long id,BindingResult bindingResult) {
+		//userValidator.validate(userModel, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return ResponseEntity.ok(bindingResult.getFieldErrors());
 		} else {
@@ -50,14 +52,18 @@ public class UserApi {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> createUser(@RequestBody UserModel userModel, BindingResult bindingResult) {
-		userValidator.validate(userModel, bindingResult);
+	public ResponseEntity<?> createUser(@RequestBody @Valid UserModel userModel, BindingResult bindingResult) {
+		//userValidator.validate(userModel, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return ResponseEntity.ok(bindingResult.getFieldErrors());
 		} else {
 			return ResponseEntity.ok(userService.save(userModel));
 		}
 
+	}
+	@PostMapping("/update-role/{id}")
+	public ResponseEntity<UserModel> updateRole(@RequestBody UserModel userModel,@PathVariable("id") long id) {		
+		return ResponseEntity.ok(userService.updateRoleUser(userModel, id));
 	}
 
 }

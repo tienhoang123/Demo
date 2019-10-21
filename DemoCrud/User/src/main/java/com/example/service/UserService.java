@@ -11,4 +11,5 @@ public interface UserService {
 	public UserModel findOneById(Long id);
 	public UserModel update(UserModel userModel, long id);
 	public UserModel save(UserModel userModel);
+	public UserModel updateRoleUser(UserModel userModel, long id);
 }

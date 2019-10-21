@@ -1,18 +1,26 @@
 package com.example.model;
 
 import javax.persistence.Column;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 public class UserModel extends AbstractModel<UserModel> {
 
 	private static final long serialVersionUID = 1L;
-
+	@NotEmpty(message = "Not Empty !")
 	private String userName;
+	@NotEmpty(message = "Not Empty !")
 	private String password;
+	@NotEmpty(message = "Not Empty !")
 	private String fullName;
+	@NotEmpty(message = "Not Empty !")
+	@Email(message = "Format Email !")
 	private String email;
+	@NotEmpty(message = "Not Empty !")
 	private String phone;
 	private int status;
 	private String nameRole;
+	@NotEmpty(message = "Not Empty !")
 	private Long[] roleUsers = new Long[] {};
 
 	public String getUserName() {
@@ -78,5 +86,6 @@ public class UserModel extends AbstractModel<UserModel> {
 	public void setRoleUsers(Long[] roleUsers) {
 		this.roleUsers = roleUsers;
 	}
+
 
 }

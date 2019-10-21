@@ -12,6 +12,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.validator.UserValidator;
 
@@ -38,6 +40,7 @@ public class UserConfiguration extends WebMvcConfigurerAdapter {
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
+
 //	@Bean
 //	public MessageSource messageSource() {
 //		ReloadableResourceBundleMessageSource bundleMessageSource = new ReloadableResourceBundleMessageSource();
@@ -48,6 +51,11 @@ public class UserConfiguration extends WebMvcConfigurerAdapter {
 	@Bean
 	public UserValidator userValidator() {
 		return new UserValidator();
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 
 }

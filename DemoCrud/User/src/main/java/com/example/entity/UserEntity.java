@@ -33,7 +33,7 @@ public class UserEntity extends BaseEntity
     @Column
     private int status;
     
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER,cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<UserRoleEntity> UserRoleEntitys;
 
 	public List<UserRoleEntity> getUserRoleEntitys() {

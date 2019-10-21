@@ -52,6 +52,15 @@
        <label style="color: red" id="phoneError" for="usr" ></label>
     </div>
     
+    <c:if test="${model.id == null}">
+        <div class="form-group">
+      <label for="pwd">PassWord:</label>
+      <input type="text" class="form-control" id="password" name="password" value = "${model.password}">
+       <label style="color: red" id="passwordError" for="usr" ></label>
+    </div>
+    </c:if>
+
+    
     <div class="form-group">
      <label for="pwd">Vai Tro:</label>
      	<br>
@@ -62,7 +71,7 @@
     <input type="hidden" id="id" value="${model.id}">
     </form:form>
     <button id="btnSave"  type="button" class="btn btn-primary">Submit</button>
-    <button id="btnBack" onclick="window.location.href='<c:url value="/home" />'"  type="button" class="btn btn-danger">Back</button>
+    <button id="btnBack" onclick="window.location.href='<c:url value="/admin/home" />'"  type="button" class="btn btn-danger">Back</button>
 </div>
 </body>
 </html>
@@ -74,8 +83,9 @@
 	   var dataArray = {};
 	   $("#userNameError").text('');
 	   $("#emailError").text('');
-	   $("#phoneError").text('');
+	   $("#phoneError").text('');	   
 	   $("#roleUsersError").text('');
+	   $("#passwordError").text('');
 	   var roleUsers = $('input[type=checkbox]:checked').map(function () {
            return $(this).val();
        }).get();
@@ -83,10 +93,8 @@
 	   dataArray["userName"] = $("#userName").val();
 	   dataArray["email"] = $("#email").val();
 	   dataArray["phone"] = $("#phone").val();
+	   dataArray["password"] = $("#password").val();	   
 	   dataArray["roleUsers"] = roleUsers;
-
-	  
-
 	   if($("#id").val() != ''){
 		   updateUser(dataArray,$("#id").val());
 		}else{

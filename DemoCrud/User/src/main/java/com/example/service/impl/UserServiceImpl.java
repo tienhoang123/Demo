@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.converter.UserConverter;
 import com.example.entity.UserEntity;
@@ -30,6 +31,8 @@ public class UserServiceImpl implements UserService {
 	private UserConverter converter;
 	@Autowired
 	private RoleRepository roleRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 	public List<UserModel> findAll(UserModel model) {
 		Pageable pageable = new PageRequest(model.getPage(), model.getMaxPageItems());
@@ -73,7 +76,6 @@ public class UserServiceImpl implements UserService {
 			UserRoleEntity roleEntity = new UserRoleEntity();
 			roleEntity.setRole(roleRepository.findOne(item));
 			roleEntity.setUser(entity);
-			roleEntity.setUser(entity);
 			userRole.add(roleEntity);
 		}
 		
@@ -85,18 +87,34 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public UserModel save(UserModel userModel) {
-		UserEntity entity = converter.convertToEntity(userModel);		
+		UserEntity entity = converter.convertToEntity(userModel);	
+		entity.setPassword(passwordEncoder.encode(userModel.getPassword()));
 		List<UserRoleEntity> userRole = new ArrayList<UserRoleEntity>();		
 		for (Long item : userModel.getRoleUsers()) {
 			UserRoleEntity roleEntity = new UserRoleEntity();
 			roleEntity.setRole(roleRepository.findOne(item));
-			roleEntity.setUser(entity);
 			roleEntity.setUser(entity);
 			userRole.add(roleEntity);
 		}	
 		entity.setUserRoleEntitys(userRole);
 		entity = userRepository.save(entity);
 		return converter.convertToDto(entity);
+	}
+
+	@Override
+	public UserModel updateRoleUser(UserModel userModel, long id) {
+		UserEntity entityOld = userRepository.findOneById(id);	
+		List<UserRoleEntity> userRole = new ArrayList<UserRoleEntity>();	
+		for (Long item : userModel.getRoleUsers()) {
+			UserRoleEntity roleEntity = new UserRoleEntity();
+			roleEntity.setRole(roleRepository.findOne(item));
+			roleEntity.setUser(entityOld);
+			userRole.add(roleEntity);
+		}		
+		entityOld.getUserRoleEntitys().clear();
+		entityOld.getUserRoleEntitys().addAll(userRole);
+		entityOld = userRepository.save(entityOld);
+		return converter.convertToDto(entityOld);
 	}
 
 }

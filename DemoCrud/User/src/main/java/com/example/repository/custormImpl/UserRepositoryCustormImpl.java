@@ -22,7 +22,7 @@ public class UserRepositoryCustormImpl implements UserRepositoryCustorm {
 
 	public List<UserEntity> findAll(UserModel model, Pageable pageable) {
 		StringBuilder sql = new StringBuilder("FROM UserEntity AS us");
-		sql.append(" WHERE 1=1 ");
+		sql.append(" WHERE 1=1 ");	
 		this.buildQuery(sql, model);
 		Query query = entityManager.createQuery(sql.toString());
 		query.setFirstResult(pageable.getOffset());

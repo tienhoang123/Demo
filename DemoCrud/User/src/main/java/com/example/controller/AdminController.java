@@ -65,7 +65,7 @@ public class AdminController {
 	@RequestMapping(value = "/drop-drag", method = RequestMethod.GET)
 	public String getUserByRole(Model model) {	
 		List<RoleModel> models = roleService.findAllRoleByUser();
-	
+		model.addAttribute("roles", roleService.findAllRole());
 		model.addAttribute("models", models);
 		return "admin/dropdrag";
 	}

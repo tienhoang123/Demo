@@ -1,6 +1,5 @@
 package com.example.model;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
@@ -22,6 +21,7 @@ public class UserModel extends AbstractModel<UserModel> {
 	private String nameRole;
 	@NotEmpty(message = "Not Empty !")
 	private Long[] roleUsers = new Long[] {};
+	private String checked;
 
 	public String getUserName() {
 		return userName;
@@ -87,5 +87,12 @@ public class UserModel extends AbstractModel<UserModel> {
 		this.roleUsers = roleUsers;
 	}
 
+	public String getChecked() {
+		return checked != null ? checked : "";
+	}
+
+	public void setChecked(String checked) {
+		this.checked = checked;
+	}
 
 }

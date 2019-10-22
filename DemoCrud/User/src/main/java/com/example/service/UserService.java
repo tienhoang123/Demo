@@ -1,7 +1,9 @@
 package com.example.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.example.model.RoleModel;
 import com.example.model.UserModel;
 
 public interface UserService {
@@ -12,4 +14,5 @@ public interface UserService {
 	public UserModel update(UserModel userModel, long id);
 	public UserModel save(UserModel userModel);
 	public UserModel updateRoleUser(UserModel userModel, long id);
+	/* public Map<RoleModel,String> getRoleByUser(long id); */
 }

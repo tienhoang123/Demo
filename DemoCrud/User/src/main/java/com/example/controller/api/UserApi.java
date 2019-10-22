@@ -50,6 +50,7 @@ public class UserApi {
 			return ResponseEntity.ok(userService.update(userModel, id));
 		}
 	}
+	
 
 	@PostMapping
 	public ResponseEntity<?> createUser(@RequestBody @Valid UserModel userModel, BindingResult bindingResult) {
@@ -64,6 +65,21 @@ public class UserApi {
 	@PostMapping("/update-role/{id}")
 	public ResponseEntity<UserModel> updateRole(@RequestBody UserModel userModel,@PathVariable("id") long id) {		
 		return ResponseEntity.ok(userService.updateRoleUser(userModel, id));
+	}
+	
+	@PostMapping("/get-data/{id}")
+	public ResponseEntity<UserModel> getData(@PathVariable("id") long id) {		
+		return ResponseEntity.ok(userService.findOneById(id));
+	}
+	
+	@PostMapping("/update/{id}")
+	public ResponseEntity<?> update(@RequestBody @Valid UserModel userModel, @PathVariable("id") long id,BindingResult bindingResult) {
+		//userValidator.validate(userModel, bindingResult);
+		if (bindingResult.hasErrors()) {
+			return ResponseEntity.ok(bindingResult.getFieldErrors());
+		} else {
+			return ResponseEntity.ok(userService.update(userModel, id));
+		}
 	}
 
 }
